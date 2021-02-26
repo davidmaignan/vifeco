@@ -20,6 +20,7 @@ import java.util.Map;
 @ArtifactProviderFor(GriffonController.class)
 public class CollectionController extends AbstractGriffonController {
     private CollectionModel model;
+    private CollectionView view;
 
     @Inject
     private DatabaseService dbService;
@@ -27,6 +28,26 @@ public class CollectionController extends AbstractGriffonController {
     @MVCMember
     public void setModel(@Nonnull CollectionModel model) {
         this.model = model;
+    }
+
+    @MVCMember
+    public void setView(@Nonnull CollectionView view) {
+        this.view = view;
+    }
+
+    @Override
+    public void mvcGroupInit(@Nonnull Map<String, Object> args) {
+        try {
+            model.collections.addAll(dbService.collectionDAO.findAll());
+            model.addCategories(dbService.categoryDAO.findAll());
+            getApplication().getEventRouter().publishEvent("status.info", Arrays.asList("db.success.fetch"));
+        } catch (Exception e){
+            getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("db.error.fetch"));
+        }
+
+        view.initForm();
+
+        getApplication().getEventRouter().addEventListener(listeners());
     }
 
     @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)

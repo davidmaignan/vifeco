@@ -24,4 +24,8 @@
             GridPane.columnIndex="0" GridPane.rowIndex="1"
             mnemonicParsing="false"
             text="Click"/>
+    <Button fx:id="openActionTarget" layoutX="350" layoutY="10"
+            GridPane.columnIndex="0" GridPane.rowIndex="1"
+            mnemonicParsing="false"
+            text="Open"/>
 </AnchorPane>

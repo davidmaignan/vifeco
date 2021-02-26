@@ -32,7 +32,7 @@ public class VifecoController extends AbstractGriffonController {
     @Override
     public void mvcGroupInit(@Nonnull Map<String, Object> args) {
         getApplication().getEventRouter().addEventListener(listenerList());
-
+        createGroup("video");
     }
 
     private Map<String, RunnableWithArgs> listenerList(){

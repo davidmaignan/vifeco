@@ -27,6 +27,24 @@ public class VideoController extends AbstractGriffonController {
 
     @Inject private DatabaseService dbService;
 
+    @Override
+    public void mvcGroupInit(@Nonnull Map<String, Object> args) {
+        try{
+            model.videoList.addAll(dbService.videoDAO.findAll());
+            model.getUserSet().addAll(dbService.userDAO.findAll());
+            model.getCollectionSet().addAll(dbService.collectionDAO.findAll());
+            model.categorySet.addAll(dbService.categoryDAO.findAll());
+            getApplication().getEventRouter().publishEvent("status.info", Arrays.asList("db.success.fetch"));
+
+            //@todo add BiDirectionalBinding to remove this hack
+            view.initForm();
+        } catch (Exception e){
+            getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("db.error.fetch"));
+        }
+
+        getApplication().getEventRouter().addEventListener(listeners());
+    }
+
     @MVCMember
     public void setModel(@Nonnull VideoModel model) {
         this.model = model;

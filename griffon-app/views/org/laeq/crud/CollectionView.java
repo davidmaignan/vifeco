@@ -4,6 +4,7 @@ import griffon.core.artifact.GriffonView;
 import griffon.inject.MVCMember;
 import griffon.metadata.ArtifactProviderFor;
 import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -11,13 +12,10 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 import org.codehaus.griffon.runtime.javafx.artifact.AbstractJavaFXGriffonView;
 import org.laeq.VifecoView;
-import org.laeq.model.Category;
-import org.laeq.model.Collection;
-//import org.laeq.model.Color;
-//import org.laeq.model.icon.IconSVG;
-
+import org.laeq.model.*;
+import org.laeq.model.icon.IconSVG;
 import javax.annotation.Nonnull;
-import javax.swing.*;
+
 
 @ArtifactProviderFor(GriffonView.class)
 public class CollectionView extends AbstractJavaFXGriffonView {
@@ -56,12 +54,14 @@ public class CollectionView extends AbstractJavaFXGriffonView {
 
         parentView.middle.getItems().clear();
         parentView.middle.getItems().add(node);
+
+        init();
     }
 
     private void init() {
         name.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getName()));
         categories.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue().getCategorieNames()));
-//        isDefault.setCellValueFactory(cellData -> cellData.getValue().getDefault() ? new SimpleObjectProperty<>(new Icon(IconSVG.tick, Color.green)) : null);
+        isDefault.setCellValueFactory(cellData -> cellData.getValue().getDefault() ? new SimpleObjectProperty<>(new Icon(IconSVG.tick, ColorDefinition.green)) : null);
         actions.setCellFactory(addActions());
 
         collectionTable.setItems(this.model.collections);
@@ -69,7 +69,28 @@ public class CollectionView extends AbstractJavaFXGriffonView {
         model.name.bindBidirectional(nameField.textProperty());
     }
 
+    public void initForm(){
+        runInsideUIAsync(() -> {
+            double x = 0;
+            double y = 0;
+            double index = 0;
+            for (Category category : model.getCategories()) {
+                CategoryCheckedBox checkedBox = new CategoryCheckedBox(category);
+                checkedBox.setLayoutX(x);
+                checkedBox.setLayoutY(y);
+                x += checkedBox.getWidth() + 20;
+                index++;
 
+                if (index != 0 && index % 3 == 0) {
+                    x = 0;
+                    y += 45;
+                }
+
+                categoryContainer.getChildren().add(checkedBox);
+                checkedBox.getBox().selectedProperty().bindBidirectional(model.categorySBP.get(category));
+            }
+        });
+    }
 
     private Callback<TableColumn<Collection, Void>, TableCell<Collection, Void>> addActions() {
         return param -> {
@@ -83,14 +104,11 @@ public class CollectionView extends AbstractJavaFXGriffonView {
                     delete.setLayoutX(105);
 
                     btnGroup.getChildren().addAll(edit, delete);
-//                    Icon icon = new Icon(IconSVG.edit, Color.gray_dark);
-//                    edit.setGraphic(icon);
                     edit.getStyleClass().addAll("btn", "btn-sm", "btn-info");
                     edit.setOnMouseClicked(event -> {
                         model.setSelectedCollection(collectionTable.getItems().get(getIndex()));
                     });
 
-//                    delete.setGraphic(new Icon(IconSVG.bin, Color.gray_dark));
                     delete.getStyleClass().addAll("btn", "btn-sm", "btn-danger");
                     delete.setOnMouseClicked(event -> {
                         controller.delete(collectionTable.getItems().get(getIndex()));

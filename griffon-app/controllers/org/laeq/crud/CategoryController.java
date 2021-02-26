@@ -28,6 +28,18 @@ public class CategoryController extends AbstractGriffonController {
         this.model = model;
     }
 
+    @Override
+    public void mvcGroupInit(@Nonnull Map<String, Object> args) {
+        try{
+            model.categoryList.addAll(dbService.categoryDAO.findAll());
+            getApplication().getEventRouter().publishEvent("status.info", Arrays.asList("db.success.fetch"));
+        } catch (Exception e){
+            getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("db.error.fetch"));
+        }
+
+        getApplication().getEventRouter().addEventListener(listeners());
+    }
+
     @ControllerAction
     @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
     public void save(){

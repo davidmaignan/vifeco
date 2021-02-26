@@ -7,24 +7,20 @@ import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.fxml.FXML;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.SVGPath;
-import javafx.stage.Stage;
 import javafx.util.Callback;
 import org.codehaus.griffon.runtime.javafx.artifact.AbstractJavaFXGriffonView;
 import org.laeq.VifecoView;
 import org.laeq.model.Category;
-//import org.laeq.model.icon.IconSVG;
-
+import org.laeq.model.ColorDefinition;
+import org.laeq.model.Icon;
+import org.laeq.model.icon.IconSVG;
 import java.util.Arrays;
-import java.util.Collections;
 import javax.annotation.Nonnull;
-import javax.swing.*;
+
 
 @ArtifactProviderFor(GriffonView.class)
 public class CategoryView extends AbstractJavaFXGriffonView {
@@ -114,28 +110,27 @@ public class CategoryView extends AbstractJavaFXGriffonView {
     private Callback<TableColumn<Category, Void>, TableCell<Category, Void>> addActions() {
         return param -> {
             final  TableCell<Category, Void> cell = new TableCell<Category, Void>(){
-                Button edit = new Button("");
-                Button delete = new Button("");
+                Button edit = new Button("edit");
+                Button delete = new Button("delete");
 
                 Group btnGroup = new Group();
                 {
                     edit.setLayoutX(5);
-                    delete.setLayoutX(55);
+                    delete.setLayoutX(105);
 
-//                    btnGroup.getChildren().addAll(edit, delete);
-//                    Icon icon = new Icon(IconSVG.edit, org.laeq.model.Color.gray_dark);
-//                    edit.setGraphic(icon);
-//                    edit.setOnAction(event -> {
-//                        model.setSelectedCategory(categoryTable.getItems().get(getIndex()));
-//                        Category category = categoryTable.getItems().get(getIndex());
-//                        colorPickerField.setText(category.getColor());
-//                    });
-//
-//
-//                    delete.setGraphic(new Icon(IconSVG.bin, org.laeq.model.Color.gray_dark));
-//                    delete.setOnAction(event -> {
-//                        controller.delete(categoryTable.getItems().get(getIndex()));
-//                    });
+                    btnGroup.getChildren().addAll(edit, delete);
+                    edit.getStyleClass().addAll("btn", "btn-sm", "btn-info");
+
+                    edit.setOnAction(event -> {
+                        model.setSelectedCategory(categoryTable.getItems().get(getIndex()));
+                        Category category = categoryTable.getItems().get(getIndex());
+                        colorPickerField.setText(category.getColor());
+                    });
+
+                    delete.getStyleClass().addAll("btn", "btn-sm", "btn-danger");
+                    delete.setOnAction(event -> {
+                        controller.delete(categoryTable.getItems().get(getIndex()));
+                    });
                 }
 
                 @Override
