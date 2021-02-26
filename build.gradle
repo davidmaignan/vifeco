@@ -1,0 +1,150 @@
+import java.text.SimpleDateFormat
+
+buildscript {
+    repositories {
+        jcenter()
+        maven { url 'https://plugins.gradle.org/m2/' }
+        maven { url 'https://jitpack.io' }
+        mavenLocal()
+    }
+
+    dependencies {
+        classpath 'org.codehaus.griffon:gradle-griffon-plugin:2.15.1'
+        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.8.2'
+        classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
+        classpath 'org.gradle.api.plugins:gradle-izpack-plugin:0.2.3'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:2.0.4'
+        classpath 'com.github.cr0:gradle-macappbundle-plugin:3.1.0'
+        classpath 'org.kordamp.gradle:stats-gradle-plugin:0.2.2'
+        classpath 'com.github.ben-manes:gradle-versions-plugin:0.17.0'
+        classpath 'de.gliderpilot.gradle.jnlp:gradle-jnlp-plugin:1.2.5'
+        classpath 'net.nemerosa:versioning:2.6.1'
+        classpath 'com.google.gradle:osdetector-gradle-plugin:1.6.0'
+    }
+}
+
+apply plugin: 'groovy'
+apply plugin: 'org.codehaus.griffon.griffon'
+apply plugin: 'net.nemerosa.versioning'
+
+//ext.platform = osdetector.os != 'osx' ? osdetector.os : 'mac'
+
+Date buildTimeAndDate = new Date()
+ext {
+    buildDate = new SimpleDateFormat('yyyy-MM-dd').format(buildTimeAndDate)
+    buildTime = new SimpleDateFormat('HH:mm:ss.SSSZ').format(buildTimeAndDate)
+    macosx = System.getProperty('os.name').contains('Mac OS')
+}
+
+griffon {
+    disableDependencyResolution = false
+    includeGroovyDependencies = false
+    version = '2.15.1'
+    toolkit = 'javafx'
+    applicationProperties = [
+            'build_date'    : buildDate,
+            'build_time'    : buildTime,
+            'build_revision': versioning.info.commit
+    ]
+}
+
+mainClassName = 'org.laeq.Launcher'
+
+apply from: 'gradle/publishing.gradle'
+apply from: 'gradle/package.gradle'
+apply from: 'gradle/docs.gradle'
+apply plugin: 'com.github.johnrengelman.shadow'
+apply plugin: 'org.kordamp.gradle.stats'
+apply plugin: 'com.github.ben-manes.versions'
+apply plugin: 'com.github.kt3k.coveralls'
+
+
+dependencies {
+    compile "org.codehaus.griffon:griffon-guice:${griffon.version}"
+    compile "org.openjfx:javafx-base:15:linux"
+    compile "org.openjfx:javafx-graphics:15:linux"
+    compile "org.openjfx:javafx-controls:15:linux"
+    compile "org.openjfx:javafx-fxml:15:linux"
+    compile 'javax.annotation:javax.annotation-api:1.3.2'
+
+    compile 'eu.lestard:advanced-bindings:0.4.0'
+    compile 'de.jensd:fontawesomefx:8.9'
+    compile 'com.abercap:mediainfo-java-api:1.0.0.RELEASE'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+    compile group: 'org.apache.commons', name: 'commons-collections4', version: '4.0'
+    compile group: 'org.apache.xmlgraphics', name: 'batik-util', version: '1.11'
+    compile group: 'org.apache.xmlgraphics', name: 'batik-transcoder', version: '1.11'
+    compile group: 'org.apache.xmlgraphics', name: 'batik-codec', version: '1.9'
+    compile group: 'org.hibernate', name: 'hibernate-core', version:'5.4.25.Final'
+    compile group: 'org.hibernate.validator', name: 'hibernate-validator', version: '6.1.7.Final'
+    compile group: 'org.glassfish', name: 'javax.el', version: '3.0.0'
+    compile group: 'com.h2database', name: 'h2', version: '1.4.200'
+
+    compile group: 'com.github.gwenn', name: 'sqlite-dialect', version: '0.1.0'
+    compile group: 'org.xerial', name: 'sqlite-jdbc', version: '3.32.3.2'
+
+    implementation 'com.atlassian.commonmark:commonmark:0.12.1'
+    implementation 'org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0'
+    compile 'org.projectlombok:lombok:1.18.4'
+    runtime "org.slf4j:slf4j-simple:${slf4jVersion}"
+
+    testCompile "org.codehaus.griffon:griffon-javafx-test:${griffon.version}"
+    testCompile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+    testCompile "org.spockframework:spock-core:${spockVersion}"
+}
+
+task sourceJar(type: Jar) {
+    group 'Build'
+    description 'An archive of the source code'
+    classifier 'sources'
+    from sourceSets.main.allSource
+}
+
+compileGroovy.enabled = false
+
+tasks.withType(JavaCompile) {
+    sourceCompatibility = project.sourceCompatibility
+    targetCompatibility = project.targetCompatibility
+    run{
+        jvmArgs '-Dprism.vsync=false'
+    }
+}
+
+tasks.withType(GroovyCompile) {
+    sourceCompatibility = project.sourceCompatibility
+    targetCompatibility = project.targetCompatibility
+}
+
+import com.github.jengelman.gradle.plugins.shadow.transformers.PropertiesFileTransformer
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
+import java.text.SimpleDateFormat
+
+shadowJar {
+    transform(ServiceFileTransformer)
+    transform(ServiceFileTransformer) {
+        path = 'META-INF/griffon'
+    }
+    transform(ServiceFileTransformer) {
+        path = 'META-INF/types'
+    }
+    transform(PropertiesFileTransformer) {
+        paths = [
+                'META-INF/editors/java.beans.PropertyEditor'
+        ]
+    }
+}
+
+startScripts {
+    doLast {
+        if (!macosx) unixScript.text = unixScript.text.replaceAll('"(-Xdock:(name|icon)=)([^"]*?)(")', ' ')
+        windowsScript.text = windowsScript.text.replaceAll('"(-Xdock:(name|icon)=)([^"]*?)(")', ' ')
+    }
+}
+
+if (hasProperty('debugRun') && ((project.debugRun as boolean))) {
+    run {
+        jvmArgs '-Xdebug', '-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005'
+    }
+}
+

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module external.system.module.type="sourceSet" type="JAVA_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <output-test url="file://$MODULE_DIR$/../../build/classes/java/integrationTest" />
+    <exclude-output />
+    <content url="file://$MODULE_DIR$/../../src/integration-test">
+      <sourceFolder url="file://$MODULE_DIR$/../../src/integration-test/java" isTestSource="true" />
+    </content>
+    <content url="file://$MODULE_DIR$/../../src/integrationTest" />
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="module" module-name="vifeco.main" />
+    <orderEntry type="library" name="Gradle: org.codehaus.griffon:griffon-guice:2.15.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.griffon:griffon-javafx-test:2.15.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.griffon:griffon-javafx:2.15.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.griffon:griffon-core-test:2.15.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.griffon:griffon-core:2.15.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.spockframework:spock-core:1.1-groovy-2.4" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.groovy:groovy-all:2.4.15" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.inject:guice:4.2.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.guava:guava:24.0-jre" level="project" />
+    <orderEntry type="library" name="Gradle: org.testfx:testfx-core:4.0.5-alpha" level="project" />
+    <orderEntry type="library" name="Gradle: junit:junit:4.12" level="project" />
+    <orderEntry type="library" name="Gradle: org.awaitility:awaitility:3.1.0" level="project" />
+    <orderEntry type="library" name="Gradle: javax.inject:javax.inject:1" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:jsr305:3.0.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.25" level="project" />
+    <orderEntry type="library" name="Gradle: aopalliance:aopalliance:1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.checkerframework:checker-compat-qual:2.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.errorprone:error_prone_annotations:2.1.3" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.j2objc:j2objc-annotations:1.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.mojo:animal-sniffer-annotations:1.14" level="project" />
+    <orderEntry type="library" name="Gradle: com.google.code.findbugs:annotations:3.0.1u2" level="project" />
+    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-core:1.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.hamcrest:hamcrest-library:1.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.objenesis:objenesis:2.6" level="project" />
+    <orderEntry type="library" name="Gradle: net.jcip:jcip-annotations:1.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.codehaus.griffon:griffon-core-compile:2.15.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.kordamp.jipsy:jipsy:0.4.1" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.slf4j:slf4j-simple:1.7.25" level="project" />
+  </component>
+</module>

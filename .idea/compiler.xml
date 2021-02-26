@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$MAVEN_REPOSITORY$/org/codehaus/griffon/griffon-core-compile/2.15.1/griffon-core-compile-2.15.1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/codehaus/griffon/griffon-core/2.15.1/griffon-core-2.15.1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/kordamp/jipsy/jipsy/0.4.1/jipsy-0.4.1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/javax/inject/javax.inject/1/javax.inject-1.jar" />
+          <entry name="$MAVEN_REPOSITORY$/com/google/code/findbugs/jsr305/3.0.2/jsr305-3.0.2.jar" />
+          <entry name="$MAVEN_REPOSITORY$/org/slf4j/slf4j-api/1.7.25/slf4j-api-1.7.25.jar" />
+        </processorPath>
+        <module name="vifeco.test" />
+        <module name="vifeco.main" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel target="1.8" />
+  </component>
+</project>
