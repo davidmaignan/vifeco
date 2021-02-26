@@ -8,9 +8,6 @@
 <AnchorPane prefHeight="60" prefWidth="900"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="org.laeq.template.MenuController">
-    <Label fx:id="clickLabel" layoutX="10" layoutY="10"
-           text="0"
-           GridPane.columnIndex="0" GridPane.rowIndex="0"/>
     <Button fx:id="videoActionTarget" layoutX="30" layoutY="10"
             GridPane.columnIndex="0" GridPane.rowIndex="1"
             mnemonicParsing="false"
