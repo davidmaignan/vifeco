@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Built-By: david
-Build-Timestamp: 2021-02-26T10:55:57.554-0500
-Build-Revision: 1bcafae7c3b0b9cc2861507faf05db369c90ae85
-Created-By: Gradle 6.3
-Build-Jdk: 15.0.2 (BellSoft 15.0.2+8)
-Build-OS: Linux amd64 5.3.18-lp152.57-default
-Main-Class: org.laeq.Launcher
-
