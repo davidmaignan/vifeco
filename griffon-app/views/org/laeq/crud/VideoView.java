@@ -70,8 +70,8 @@ public class VideoView extends AbstractJavaFXGriffonView {
         connectActions(node, controller);
         connectMessageSource(node);
 
-        parentView.middle.getChildren().clear();
-        parentView.middle.getChildren().add(node);
+        parentView.middle.getItems().clear();
+        parentView.middle.getItems().add(node);
 
         model.name.bindBidirectional(titleValue.textProperty());
         model.duration.bindBidirectional(durationValue.textProperty());

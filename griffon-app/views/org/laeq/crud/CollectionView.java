@@ -54,8 +54,8 @@ public class CollectionView extends AbstractJavaFXGriffonView {
         connectActions(node, controller);
         connectMessageSource(node);
 
-        parentView.middle.getChildren().clear();
-        parentView.middle.getChildren().add(node);
+        parentView.middle.getItems().clear();
+        parentView.middle.getItems().add(node);
     }
 
     private void init() {

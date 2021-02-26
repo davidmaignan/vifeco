@@ -65,8 +65,8 @@ public class CategoryView extends AbstractJavaFXGriffonView {
         connectActions(node, controller);
         connectMessageSource(node);
 
-        parentView.middle.getChildren().clear();
-        parentView.middle.getChildren().add(node);
+        parentView.middle.getItems().clear();
+        parentView.middle.getItems().add(node);
 
         svgPath = new SVGPath();
         svgPath.setSmooth(true);

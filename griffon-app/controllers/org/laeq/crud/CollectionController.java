@@ -8,9 +8,11 @@ import griffon.metadata.ArtifactProviderFor;
 import org.codehaus.griffon.runtime.core.artifact.AbstractGriffonController;
 
 import griffon.transform.Threading;
+import org.laeq.DatabaseService;
 import org.laeq.model.Collection;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,6 +20,9 @@ import java.util.Map;
 @ArtifactProviderFor(GriffonController.class)
 public class CollectionController extends AbstractGriffonController {
     private CollectionModel model;
+
+    @Inject
+    private DatabaseService dbService;
 
     @MVCMember
     public void setModel(@Nonnull CollectionModel model) {
@@ -28,10 +33,10 @@ public class CollectionController extends AbstractGriffonController {
     public void save(){
         try{
             Collection collection = model.getCollection();
-//            dbService.collectionDAO.create(collection);
-//            model.clear();
-//            model.collections.clear();
-//            model.collections.addAll(dbService.collectionDAO.findAll());
+            dbService.collectionDAO.create(collection);
+            model.clear();
+            model.collections.clear();
+            model.collections.addAll(dbService.collectionDAO.findAll());
 
             getApplication().getEventRouter().publishEvent("status.success", Arrays.asList("db.success.save"));
         }catch (Exception e){
@@ -47,9 +52,9 @@ public class CollectionController extends AbstractGriffonController {
     @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
     public void delete(Collection collection) {
         try {
-//            dbService.collectionDAO.delete(collection);
-//            model.collections.clear();
-//            model.collections.addAll(dbService.collectionDAO.findAll());
+            dbService.collectionDAO.delete(collection);
+            model.collections.clear();
+            model.collections.addAll(dbService.collectionDAO.findAll());
             getApplication().getEventRouter().publishEvent("status.success", Arrays.asList("db.success.delete"));
         } catch (Exception e) {
             getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("db.error.delete"));

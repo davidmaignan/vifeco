@@ -9,6 +9,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.SplitPane;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -27,7 +28,7 @@ public class VifecoView extends AbstractJavaFXGriffonView {
     @FXML private Label clickLabel;
     @FXML public VBox menu;
     @FXML public VBox footer;
-    @FXML public AnchorPane middle;
+    @FXML public SplitPane middle;
 
     @MVCMember
     public void setController(@Nonnull VifecoController controller) {
@@ -59,6 +60,7 @@ public class VifecoView extends AbstractJavaFXGriffonView {
     private Scene init() {
         Scene scene = new Scene(new Group());
         scene.setFill(Color.WHITE);
+        scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
 
         Node node = loadFromFXML();
 

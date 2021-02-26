@@ -59,7 +59,8 @@ public class UserView extends AbstractJavaFXGriffonView {
         connectActions(node, controller);
         connectMessageSource(node);
 
-        parentView.middle.getChildren().add(node);
+        parentView.middle.getItems().clear();
+        parentView.middle.getItems().add(node);
 
         init();
     }

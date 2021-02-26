@@ -3,8 +3,8 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="60.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1"
-            fx:controller="org.laeq.template.FooterController">
-    <Label fx:id="clickLabel" prefHeight="40" prefWidth="900" text="Message"
+<AnchorPane prefHeight="60.0" maxHeight="60.0" prefWidth="800.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1"
+            fx:controller="org.laeq.template.FooterController" fx:id="messageBox">
+    <Label fx:id="messageLabel" prefHeight="40" prefWidth="900" text="Message"
            AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0" />
 </AnchorPane>

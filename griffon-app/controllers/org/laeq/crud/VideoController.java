@@ -9,11 +9,13 @@ import javafx.scene.control.TableColumn;
 import org.codehaus.griffon.runtime.core.artifact.AbstractGriffonController;
 
 import griffon.transform.Threading;
+import org.laeq.DatabaseService;
 import org.laeq.model.Collection;
 import org.laeq.model.User;
 import org.laeq.model.Video;
 
 import javax.annotation.Nonnull;
+import javax.inject.Inject;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,6 +24,8 @@ import java.util.Map;
 public class VideoController extends AbstractGriffonController {
     private VideoModel model;
     private VideoView view;
+
+    @Inject private DatabaseService dbService;
 
     @MVCMember
     public void setModel(@Nonnull VideoModel model) {
@@ -42,20 +46,19 @@ public class VideoController extends AbstractGriffonController {
     @ControllerAction
     @Threading(Threading.Policy.INSIDE_UITHREAD_ASYNC)
     public void delete(Video video){
-//        try{
-//            dbService.videoDAO.delete(video);
-//            model.videoList.remove(video);
-//            getApplication().getEventRouter().publishEvent("status.success.parametrized", Arrays.asList("video.delete.success", video.pathToName()));
-//        }  catch (Exception e){
-//            getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("video.delete.error"));
-//        }
+        try{
+            dbService.videoDAO.delete(video);
+            model.videoList.remove(video);
+            getApplication().getEventRouter().publishEvent("status.success.parametrized", Arrays.asList("video.delete.success", video.pathToName()));
+        }  catch (Exception e){
+            getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("video.delete.error"));
+        }
     }
 
     public void edit(){
         if(model.selectedVideo == null){
             getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("video.edit.error"));
             model.selectedVideo = model.videoList.get(0);
-//            return;
         }
 
         createDisplay();
@@ -80,35 +83,35 @@ public class VideoController extends AbstractGriffonController {
     }
 
     public void updateUser(TableColumn.CellEditEvent<Video, User> event) {
-//        try {
-//            Video video = event.getRowValue();
-//            video.setUser(event.getNewValue());
-//            dbService.videoDAO.create(video);
-//            getApplication().getEventRouter().publishEvent("status.success", Arrays.asList("video.user.updated.success"));
-//        } catch (Exception e) {
-//            getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("video.user.updated.error"));
-//        }
-//
-//        runInsideUISync(() -> {
-//            view.refresh();
-//        });
+        try {
+            Video video = event.getRowValue();
+            video.setUser(event.getNewValue());
+            dbService.videoDAO.create(video);
+            getApplication().getEventRouter().publishEvent("status.success", Arrays.asList("video.user.updated.success"));
+        } catch (Exception e) {
+            getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("video.user.updated.error"));
+        }
+
+        runInsideUISync(() -> {
+            view.refresh();
+        });
     }
 
     public void updateCollection(Video video, Collection newValue) {
-//        try{
-//            clear();
-//            video.updateCollection(newValue);
-//            dbService.videoDAO.create(video);
-//
-//
-//            getApplication().getEventRouter().publishEvent("status.success", Arrays.asList("video.collection.updated.success"));
-//        } catch (Exception e){
-//            getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("video.collection.updated.error"));
-//        }
-//
-//        runInsideUISync(() -> {
-//            view.refresh();
-//        });
+        try{
+            clear();
+            video.updateCollection(newValue);
+            dbService.videoDAO.create(video);
+
+
+            getApplication().getEventRouter().publishEvent("status.success", Arrays.asList("video.collection.updated.success"));
+        } catch (Exception e){
+            getApplication().getEventRouter().publishEvent("status.error", Arrays.asList("video.collection.updated.error"));
+        }
+
+        runInsideUISync(() -> {
+            view.refresh();
+        });
     }
 
     public void select(Video video) {
